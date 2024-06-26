@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  selenium:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USER_ID: ${USER_ID}
+        GRUP_ID: ${GRUP_ID}
+    container_name: ${CONTAINER}
+    volumes:
+      - ./sbase:/SeleniumBase/sbase:z
