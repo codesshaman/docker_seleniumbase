@@ -6,12 +6,9 @@ FROM debian:bullseye-20240513
 ARG ARGUMENTS
 ARG USER_ID
 ARG GRUP_ID
-ARG OPTIONS
 ENV USER_ID=${USER_ID}
 ENV GRUP_ID=${GRUP_ID}
-ENV OPTIONS=${OPTIONS}
 ENV PYTHONIOENCODING=utf8
-ENV ARGUMENTS=${ARGUMENTS}
 RUN echo "export PYTHONIOENCODING=utf8" >> ~/.bashrc && \
     echo "export USER_ID=${USER_ID}" >> ~/.bashrc && \
     echo "export GRUP_ID=${GRUP_ID}" >> ~/.bashrc
@@ -74,10 +71,6 @@ RUN gpg --batch --keyserver hkp://keyserver.ubuntu.com --recv-keys E88979FB9B30A
 RUN curl -fSsL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor | tee /usr/share/keyrings/google-chrome.gpg >> /dev/null && \
     echo deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main | tee /etc/apt/sources.list.d/google-chrome.list && \
     apt update && apt install -y google-chrome-stable
-# RUN curl -LO  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-#     apt-get install -y ./google-chrome-stable_current_amd64.deb && \
-#     rm google-chrome-stable_current_amd64.deb
-
 
 #================
 # Install Python
@@ -95,10 +88,10 @@ RUN apt update && apt install -y \
 # Configure Virtual Display
 #===========================
 RUN set -e && \
-	  echo "Starting X virtual framebuffer (Xvfb) in background..." && \
-	  Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 & \
-	  export DISPLAY=:99 && \
-	  exec "$@"
+    echo "Starting X virtual framebuffer (Xvfb) in background..." && \
+    Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 & \
+    export DISPLAY=:99 && \
+    exec "$@"
 
 COPY SeleniumBase /SeleniumBase
 COPY SeleniumBase/integrations/docker/docker-entrypoint.sh /

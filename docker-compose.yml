@@ -8,6 +8,6 @@ services:
       args:
         USER_ID: ${USER_ID}
         GRUP_ID: ${GRUP_ID}
-    container_name: ${CONTAINER}
+    container_name: ${CONTAINER_NAME}
     volumes:
       - ./sbase:/SeleniumBase/sbase:z

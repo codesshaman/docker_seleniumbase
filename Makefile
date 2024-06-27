@@ -1,7 +1,7 @@
 name = SeleniumBase
 
 CONTAINER_NAME := $(shell awk -F '=' '/CONTAINER_NAME/ {print $$2}' .env)
-
+APPNAME:=$(word 2, $(MAKECMDGOALS))
 NO_COLOR=\033[0m		# Color Reset
 COLOR_OFF='\e[0m'       # Color Off
 OK_COLOR=\033[32;01m	# Green Ok
@@ -21,14 +21,16 @@ help:
 	@echo -e "$(WARN_COLOR)- make connect			: Connect to the container"
 	@echo -e "$(WARN_COLOR)- make down			: Stopping configuration"
 	@echo -e "$(WARN_COLOR)- make env			: Create .env file"
-	@echo -e "$(WARN_COLOR)- make re			: Rebuild configuration"
 	@echo -e "$(WARN_COLOR)- make ps			: View configuration"
+	@echo -e "$(WARN_COLOR)- make re			: Rebuild configuration"
+	@echo -e "$(WARN_COLOR)- make run <script>		: Launch script"
 	@echo -e "$(WARN_COLOR)- make push			: Push configuration to git"
 	@echo -e "$(WARN_COLOR)- make clean			: Cleaning configuration$(NO_COLOR)"
 
 build:
 	@printf "$(YELLOW)==== Building configuration ${name}... ====$(NO_COLOR)\n"
-	@docker-compose -f ./docker-compose.yml up -d --build
+	# @docker-compose -f ./docker-compose.yml up -d --build
+	@bash ./bash/build.sh
 
 
 connect:
@@ -53,6 +55,18 @@ push:
 re:
 	@printf "$(OK_COLOR)==== Rebuild configuration ${name}... ====$(NO_COLOR)\n"
 	@docker-compose -f ./docker-compose.yml up -d --no-deps --build
+
+run:
+	@printf "$(OK_COLOR)==== Starting the script ${name} ====$(NO_COLOR)\n"
+	@$(eval args := $(words $(filter-out --,$(MAKECMDGOALS))))
+	@if [ "${args}" -eq 2 ]; then \
+		echo "$(OK_COLOR) Launch script ${APPNAME}$(NO_COLOR)\n"; \
+		bash ./bash/run.sh ${APPNAME}; \
+	elif [ "${args}" -gt 2 ]; then \
+		echo "$(ERROR_COLOR)The script name must not contain spaces!$(NO_COLOR)\n"; \
+	else \
+		echo "$(ERROR_COLOR)Enter the script name!$(NO_COLOR)\n"; \
+	fi
 
 clean: down
 	@printf "$(ERROR_COLOR)==== Cleaning configuration ${name}... ====$(NO_COLOR)\n"
