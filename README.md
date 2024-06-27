@@ -4,9 +4,9 @@
 
 ## Step 0. Clone reposytory
 
-``git clone git@gitlab.askona.ru:dp-data-platform/seleniumauth.git``
+``git clone https://github.com/codesshaman/docker_seleniumbase.git``
 
-``cd seleniumauth``
+``cd docker_seleniumbase``
 
 ## Step 1. Create virtual environment
 
@@ -24,11 +24,13 @@ Run
 
 Wait and relax!
 
-## Step 4. Check building
+## Step 4. Launch your script
 
-Use 
+Put your selenium script to ``sbase/scripts`` folder and run 
 
-``make ps``
+``make run <scriptname> <scriptargs>``
 
-To check launch container status
+For launch this script. If your script launch
+without arguments, you can use just 
 
+``make run <scriptname>``
