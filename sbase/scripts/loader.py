@@ -1,3 +1,4 @@
+from functions.custom_functions import downloads_path
 from seleniumbase import SB
 
 with SB(uc=True, headless2=True) as sb:
@@ -23,4 +24,6 @@ with SB(uc=True, headless2=True) as sb:
 
     sb.assert_downloaded_file(whl_file)
     sb.assert_downloaded_file(tar_gz_file)
+
+    downloads_path()
     print("Successfully downloaded files!")

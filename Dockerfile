@@ -9,6 +9,7 @@ ARG GRUP_ID
 ENV USER_ID=${USER_ID}
 ENV GRUP_ID=${GRUP_ID}
 ENV PYTHONIOENCODING=utf8
+ENV ARGUMENTS=${ARGUMENTS}
 RUN echo "export PYTHONIOENCODING=utf8" >> ~/.bashrc && \
     echo "export USER_ID=${USER_ID}" >> ~/.bashrc && \
     echo "export GRUP_ID=${GRUP_ID}" >> ~/.bashrc
